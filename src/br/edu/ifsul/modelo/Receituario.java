@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +48,8 @@ public class Receituario implements Serializable{
     private Calendar validade;
     @NotNull(message = "O campo consulta deve ser informado")
     @ManyToOne
-    @JoinColumn(name = "consulta", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "consulta", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_receituario_consulta"))
     private Consulta consulta;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "medicamentos", 

@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +32,8 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "paciente")
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING,length = 2)
+@DiscriminatorValue(value = "PA")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Paciente  implements Serializable{
     @Id

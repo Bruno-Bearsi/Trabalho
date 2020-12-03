@@ -6,20 +6,24 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -35,9 +39,9 @@ public class Consulta implements Serializable {
     @GeneratedValue(generator = "seq_consulta", strategy = GenerationType.SEQUENCE)
     private Integer id;
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "O campo data não pode ser nulo")
-    @Column(name = "data", nullable = false)
-    private Calendar data;
+    @NotNull(message = "O campo diaMes não pode ser nulo")
+    @Column(name = "diaMes", nullable = false)
+    private Calendar diaMes;
     @Temporal(TemporalType.DATE)
     @NotNull(message = "O campo hora não pode ser nulo")
     @Column(name = "hora", nullable = false)
@@ -56,6 +60,12 @@ public class Consulta implements Serializable {
     @ManyToOne
     @JoinColumn(name = "paciente", referencedColumnName = "id", nullable = false)
     private Paciente paciente;
+    @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Exame> exames = new ArrayList<>();
+    @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Receituario> receituarios = new ArrayList<>();
 
     public Consulta() {
     }
@@ -68,12 +78,12 @@ public class Consulta implements Serializable {
         this.id = id;
     }
 
-    public Calendar getData() {
-        return data;
+    public Calendar getDiaMes() {
+        return diaMes;
     }
 
-    public void setData(Calendar data) {
-        this.data = data;
+    public void setDiaMes(Calendar diaMes) {
+        this.diaMes = diaMes;
     }
 
     public Calendar getHora() {
@@ -115,5 +125,38 @@ public class Consulta implements Serializable {
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
+
+    public List<Exame> getExames() {
+        return exames;
+    }
+
+    public void setExames(List<Exame> exames) {
+        this.exames = exames;
+    }
+
+    public List<Receituario> getReceituarios() {
+        return receituarios;
+    }
+
+    public void setReceituarios(List<Receituario> receituarios) {
+        this.receituarios = receituarios;
+    }
     
+    public void adicionarExame(Exame obj) {
+        obj.setConsulta(this);
+        this.exames.add(obj);
+    }
+    
+    public void adicionarReceituario(Receituario obj) {
+        obj.setConsulta(this);
+        this.receituarios.add(obj);
+    }
+    
+    public void removerExame(int index) {
+        this.exames.remove(index);
+    } 
+    
+    public void removerReceituario(int index) {
+        this.receituarios.remove(index);
+    } 
 }

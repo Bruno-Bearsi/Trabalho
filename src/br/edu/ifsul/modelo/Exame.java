@@ -8,6 +8,7 @@ package br.edu.ifsul.modelo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,8 @@ public class Exame  implements Serializable{
     private String descricao;
     @NotNull(message = "O campo consulta deve ser informado")
     @ManyToOne
-    @JoinColumn(name = "consulta", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "consulta", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_exame_consulta"))
     private Consulta consulta;
 
     public Exame() {
@@ -64,11 +66,11 @@ public class Exame  implements Serializable{
     }
 
     public String getDescricao() {
-        return nome;
+        return descricao;
     }
 
-    public void setDescricao(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Consulta getConsulta() {

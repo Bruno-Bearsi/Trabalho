@@ -8,6 +8,7 @@ package br.edu.ifsul.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,6 +24,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "medico")
+@DiscriminatorValue(value = "ME")
 public class Medico extends Paciente implements Serializable{
     @Length(max = 20, message = "O campo crm não pode ter mais que {max} caracteres")
     @NotBlank(message = "O campo crm não pode ser em branco")
